@@ -78,7 +78,6 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmdl_string, int 
     int atlas_h;
 
     int run = 1;
-    int gl_error;
 
     char text[] = "Hello_World!";
     int glyph_count = sizeof(text) - 1;
@@ -155,11 +154,6 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmdl_string, int 
         x += glyphs[i].w + 2;
     }
     
-    gl_error = glGetError();
-    if(gl_error) {
-        return 1;
-    }
-
     ShowWindow(wnd_handle, SW_SHOWNORMAL); 
 
 #if 1
@@ -290,8 +284,6 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmdl_string, int 
 
         float ortho[16];
 
-        int error;
-
         vertices = (vertex_t *)malloc(sizeof(vertex_t)*4*glyph_count);
         indices  = (uint32_t *)malloc(sizeof(uint32_t)*6*glyph_count);
 
@@ -413,12 +405,8 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmdl_string, int 
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
 
-            error = glGetError();
-
             glVertexAttribPointer(0, 2, GL_FLOAT, 0, sizeof(vertex_t), 0);
             glVertexAttribPointer(1, 2, GL_FLOAT, 0, sizeof(vertex_t), (void *)(sizeof(float)*2));
-
-            error = glGetError();
 
             glDrawElements(GL_TRIANGLES, glyph_count*6, GL_UNSIGNED_INT, NULL);
 
